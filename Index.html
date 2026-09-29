@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Samurai Burguer & Sushi</title>
+<!-- Google Fonts para uma tipografia marcante -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<!-- FontAwesome para ícones -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--red:#e50914;--dark:#0b0b0d;--card:#16161a;--border:#2a2a30;--gold:#f4b400;--bg:#0b0b0d;--muted:#999;--text:#f4f4f4}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* Cabeçalho */
+header{background:rgba(11, 11, 13, 0.95);backdrop-filter: blur(10px);color:white;padding:18px 5%;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--red)}
+.brand{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-family:'Cinzel',serif;font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px}
+.logo span{color:var(--red)}
+.actions{display:flex;gap:10px;align-items:center}
+.cartbtn{border:0;background:var(--red);color:white;border-radius:50px;padding:10px 18px;font-weight:700;cursor:pointer;box-shadow:0 0 15px rgba(229,9,20,0.4);transition:transform 0.2s}
+.cartbtn:hover{transform:scale(1.05)}
+.adminbtn{border:0;background:var(--border);color:white;border-radius:50px;padding:10px 14px;font-weight:700;cursor:pointer;transition:background 0.2s}
+.adminbtn:hover{background:#3a3a45}
+
+/* Seção Hero com Katana */
+.hero{max-width:1100px;margin:25px auto;padding:40px 20px;background:linear-gradient(rgba(11,11,13,0.85), rgba(11,11,13,0.95)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;color:#fff;border-radius:20px;text-align:center;border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.5);position:relative;overflow:hidden}
+.katana-badge{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;padding:6px 18px;border-radius:50px;font-size:0.85rem;font-weight:600;margin-bottom:15px;box-shadow:0 0 10px rgba(229,9,20,0.5)}
+.hero h1{margin:0 0 10px;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px}
+.hero h1 span{color:var(--red);display:block}
+.hero p{margin:0 auto;color:#b3b3b3;max-width:650px;font-size:0.95rem;line-height:1.5}
+
+/* Navegação por Categorias */
+nav{max-width:1100px;margin:20px auto;display:flex;gap:10px;overflow:auto;padding:5px 12px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{white-space:nowrap;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:25px;padding:10px 18px;cursor:pointer;font-weight:600;transition:all 0.3s}
+nav button:hover, nav button.active{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 0 12px rgba(229,9,20,0.4)}
+
+/* Layout Principal e Cards */
+main{max-width:1100px;margin:auto;padding:0 12px 100px}
+.section{margin-top:35px}
+.section h2{font-size:22px;margin:0 0 15px;font-family:'Cinzel',serif;border-left:4px solid var(--red);padding-left:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:15px}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;gap:14px;min-height:150px;transition:transform 0.2s, border-color 0.2s}
+.card:hover{transform:translateY(-3px);border-color:var(--red)}
+.pic{width:110px;height:110px;border-radius:12px;background:#222;object-fit:cover;flex:none}
+.info{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.info h3{font-size:16px;margin:0 0 4px;font-weight:600}
+.desc{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:8px}
+.price-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.price{font-size:17px;font-weight:700;color:var(--text)}
+.old{font-size:11px;text-decoration:line-through;color:var(--muted);margin-left:5px}
+.add{border:0;background:var(--red);color:#fff;border-radius:8px;padding:7px 12px;cursor:pointer;font-weight:600;font-size:12px;transition:background 0.2s}
+.add:hover{background:#ff1e2a}
+
+/* Modais e Admin */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter: blur(5px);display:none;align-items:flex-end;justify-content:center;z-index:200}
+.modal.open{display:flex}
+.sheet{background:#141418;border:1px solid var(--border);color:var(--text);width:min(680px,100%);max-height:90vh;overflow:auto;border-radius:24px 24px 0 0;padding:25px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.row button{background:transparent;border:none;color:var(--red);cursor:pointer;font-size:16px}
+.total{font-size:20px;font-weight:700;margin:20px 0;text-align:right}
+.field{width:100%;padding:14px;background:#1e1e24;border:1px solid var(--border);color:#fff;border-radius:12px;margin:8px 0 14px;font-family:inherit}
+.field:focus{outline:none;border-color:var(--red)}
+.whats{width:100%;background:#25d366;color:white;border:0;padding:15px;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;transition:background 0.2s}
+.whats:hover{background:#1ebe57}
+.close{float:right;border:0;background:var(--border);color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer}
+
+.admin input, .admin textarea, .admin select{width:100%;padding:10px;margin:5px 0 10px;background:#1e1e24;border:1px solid var(--border);color:#fff;border-radius:8px}
+.admin table{width:100%;border-collapse:collapse;font-size:13px}
+.admin td, .admin th{padding:10px;border-bottom:1px solid var(--border);text-align:left}
+.danger{background:#b00020!important;color:#fff;border:0;padding:10px;border-radius:8px;cursor:pointer}
+.small{font-size:12px;color:var(--muted)}
+
+footer{text-align:center;padding:40px;color:var(--muted);font-size:0.9rem;border-top:1px solid var(--border);margin-top:40px}
+
+@media(max-width:600px){
+    .hero h1{font-size:24px}
+    .card{min-height:0}
+    .pic{width:90px;height:90px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"><i class="fa-solid fa-utensils" style="color: var(--red);"><span>SAMURAI</span></i> BURGUER & SUSHI</div>
+    <div class="actions">
+      <button class="adminbtn" onclick="admin()" title="Painel Administrativo"><i class="fa-solid fa-gear"></i></button>
+      <button class="cartbtn" onclick="openCart()"><i class="fa-solid fa-cart-shopping"></i> <span id="cartCount">0</span></button>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="katana-badge">
+    <i class="fa-solid fa-khanda"></i> Afiado na Tradição
+  </div>
+  <h1>Samurai <span>Burguer & Sushi</span></h1>
+  <p>Hambúrgueres artesanais, sushi fresco, combinados especiais, pokes, bebidas e muito mais.</p>
+</div>
+
+<nav id="cats"></nav>
+<main id="menu"></main>
+<footer>Samurai Burguer & Sushi • Faça seu pedido pelo WhatsApp</footer>
+
+<div class="modal" id="cartModal">
+  <div class="sheet">
+    <button class="close" onclick="closeCart()"><i class="fa-solid fa-xmark"></i> Fechar</button>
+    <h2>Seu pedido</h2>
+    <div id="cartItems"></div>
+    <div class="total" id="cartTotal">Total: R$ 0,00</div>
+    <input class="field" id="customer" placeholder="Seu nome">
+    <textarea class="field" id="address" placeholder="Endereço / referência"></textarea>
+    <button class="whats" onclick="sendWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Finalizar pedido pelo WhatsApp</button>
+  </div>
+</div>
+
+<div class="modal" id="adminModal">
+  <div class="sheet">
+    <button class="close" onclick="document.getElementById('adminModal').classList.remove('open')">Fechar</button>
+    <div id="adminApp"></div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+"Temaki":[
+["5 Mini Temaki","5 mini temakis fritos com recheio à sua escolha entre salmão grelhado ou kani. A opção ideal para compartilhar.","15.99"],
+["Temaki Filadélfia","Temaki clássico envolto em alga nori, recheado com arroz selecionado, cubos de salmão e cream cheese.","26.99"],
+["Temaki Hot Filadélfia","Cone empanado recheado com arroz, salmão grelhado e a cremosidade do cream cheese.","25.99"],
+["Temaki Hot Filadélfia Ebi","Cone de alga nori recheado com arroz, salmão, camarão e a cremosidade do cream cheese.","29.99"],
+["Temaki Hot de Kani","Cone empanado de arroz frito, recheado com salmão ou kani. Uma opção diferenciada e saborosa.","22.99"],
+["Mini Temaki Primavera Kani","Massa crocante de rolinho primavera, recheado com kani ou salmão grelhado.","4.50"]],
+"Sushi Hot":[
+["Hot Kani (5 Unidades)","Enrolado de arroz frito, recheado com kani e cream cheese, empanado na farinha panko.","12.00"],
+["Sushi Burguer Salmão","Base de arroz frito recheada com salmão, pepino, cream cheese e cebolinha.","23.99"],
+["Camarão Empanado (5 Unidades)","Camarões selecionados, empanados na tradicional farinha panko.","21.99"],
+["Sushi Burguer Kani","Arroz crocante recheado com kani desfiado, cream cheese e cebolinha.","19.99"],
+["Hot Salmão (5 Unidades)","Enrolado de arroz com cream cheese e salmão grelhado, finalizado com empanamento.","14.99"],
+["Hot Camarão (5 Unidades)","Hot roll crocante com camarão e recheio cremoso.","18.99"],
+["Porção 5unid Bolinha de Sushi","Massa frita de arroz de sushi, com patê de sua preferência e cebolinha.","11.99"],
+["Bolinha Frita de Kani ou Salmão","Bolinha crocante por fora e cremosa por dentro. Escolha o recheio.","2.00"],
+["Combinado Mini Hot Kani 13 Peças","10 hot kani mais 3 bolinhas de salmão.","14.99"]],
+"Combinados":[
+["Combinado 20 Peças","5 Hot Roll + 5 Niguiris de Kani + seleção da casa.","23.99"],
+["Combinado de 15 Peças Kani","Hot kani frito em todas as 15 peças.","18.99"],
+["Combo da Hora (15 Peças)","Seleção especial de 15 peças.","24.99"],
+["Super Combinado 18 Peças","5 hot roll, 5 hot kani, 5 hot salmão e 3 mini temaki de kani + guaraná em lata.","25.99"],
+["Combinado 15 Peças de Kani","Seleção de hot kani.","22.99"],
+["Combo Hot - 15 Peças","5 Hot Roll.","22.99"],
+["Combinado 20 Peças","5 Hot Roll + 5 Niguiris de Kani + seleção da casa.","26.99"],
+["Combinado 25 Peças","Combo Seleção com 25 peças.","32.99"],
+["Super Combinado 45 Peças","5 uramaki de salmão, 3 vulkamaki de salmão, 2 joy, 5 hot roll, 5 hot camarão, 5 hossomaki e mais.","94.99"]],
+"Hambúrguer":[
+["Combo Samurai Supreme","120g carne, queijo cheddar, salada e barbecue.","22.99"],
+["Cheddar Burguer","Pão, carne 200g, salada, queijo cheddar e molho especial da casa.","12.99"],
+["Samurai Supreme","2 carnes, duplo cheddar, bacon e salada, molho especial da casa.","21.99"],
+["Smash Samurai","Carne 100g, queijo cheddar, cebola caramelizada e molho barbecue.","14.99"],
+["Samurai Super","Carne 120g, queijo mussarela, calabresa apimentada, catupiry e salada.","22.99"],
+["Samurai Supreme Especial","2 carnes, duplo cheddar, bacon e salada, molho especial da casa.","26.99"],
+["Samurai Sertão","Carne 120g, queijo coalho, carne seca, salada e molho especial.","22.99"],
+["Big Samurai","Carne 120g, queijo mussarela, presunto, ovo, frango desfiado e molho especial.","23.99"],
+["Samurai Crispy","Carne 120g, salada, frango crispy, queijo cheddar e molho especial.","20.99"]],
+"Peças especiais":[
+["Joy","Clássica combinação de salmão, arroz e cream cheese.","6.99"],
+["Joy Camarão (5 Un.)","Combinação de salmão e camarão, arroz e cream cheese.","19.99"],
+["Joy Camarão Empanado Unidade","Salmão, camarão empanado e cream cheese.","5.00"],
+["Joy Camarão (un.)","Combinação irresistível de salmão e camarão, arroz e cream cheese.","6.99"],
+["Joy Kani","Salmão, kani e cream cheese.","4.99"],
+["Vulkamaki de Camarão","Arroz, salmão, camarão e cream cheese.","5.99"],
+["Vulkamaki de Salmão","Arroz e salmão, finalizado com cebolinha.","4.99"]],
+"Sushi Uramaki":[
+["Ebitem Especial (5 Unidades)","Enrolado de arroz e alga nori, recheado com camarão e cream cheese.","14.99"],
+["Uramaki de Camarão (5 Unidades)","Arroz e nori, recheado com camarão e cream cheese.","15.99"],
+["Uramaki de Kani (5 Unidades)","Arroz e alga nori, recheado com kani e cream cheese.","9.99"],
+["Uramaki de Salmão (5 Unidades)","Arroz e nori, recheado com salmão e cream cheese.","14.99"],
+["Uramaki de Salmão Grelhado (5 Unidades)","Arroz e nori, salmão grelhado e cream cheese.","12.99"]],
+"Hossomaki":[
+["Hossomaki de Camarão (5 Un.)","Alga nori com arroz, camarão e cream cheese.","15.99"],
+["Hossomaki de Kani (5 Un.)","Alga nori e arroz, recheado com kani e cream cheese.","12.99"],
+["Hossomaki de Salmão Grelhado (5 Un.)","Alga nori com arroz, cream cheese e salmão.","14.99"]],
+"Sushinha":[
+["Sushinha de Camarão","Enrolado de arroz generosamente recheado com camarão selecionado.","21.99"],
+["Sushinha de Camarão e Salmão","Arroz recheado com a combinação clássica de camarão e salmão.","24.99"],
+["Sushinha de Salmão","Arroz recheado com pedaços de salmão selecionado.","17.99"],
+["Sushinha de Kani com Cebolinha","Sushinha de kani finalizada com cebolinha.","15.99"]],
+"Hot-dog Sushi":[["Hotdog de Sushi Salmão Grelhado","Arroz frito, salmão, cream cheese, cebolinha e gergelim.","22.99"]],
+"Niguiri":[
+["Niguiri","Bolinho de arroz e salmão, preparado com temperos especiais.","4.99"],
+["Niguiri Kani","Bolinho de arroz e kani, preparado com tempero especial.","3.99"],
+["Sashimi de Salmão","Fatia de salmão selecionado com corte preciso.","5.99"],
+["Sashimi de Salmão Maçaricado","Fatia de salmão selecionada e finalizada no maçarico.","4.99"]],
+"Pokes":[
+["Poke Especial 1 Proteína","Base de arroz com 1 proteína à sua escolha e acompanhamentos.","29.99"],
+["Poke Especial 2 Proteínas","Base de arroz com 2 proteínas à sua escolha e acompanhamentos.","32.99"],
+["Poke Especial 3 Proteínas","Base de arroz com 3 proteínas à sua escolha e acompanhamentos.","39.99"]],
+"Bebidas":[
+["Coca Cola II","Coca-Cola.","10.00"],["Guaraná","Refrigerante Guaraná 350ml.","4.50","4.99"],
+["Refrigerante Coca Cola Light Pet 1L","Coca-Cola.","10.00"],["Refrigerante Coca Cola Colorida","Refrigerante Coca-Cola.","5.00"],
+["Refrigerante Guaraná de 1 Litro","Guaraná 1 litro.","9.99"],["Cerveja Skol 350ml Unidade","Cerveja Skol lata 350ml.","4.99"],
+["Cerveja Antártica Lata Original","Cerveja Antarctica lata.","5.00"],["Itaipava","Cerveja Itaipava 350ml.","4.00"],
+["Cerveja Heineken 330ml Unidade","Cerveja Heineken 330ml.","9.99"],["Guaraná Antarctica 1L","Guaraná Antarctica.","9.00"],
+["Refrigerante Coca Cola sem Açúcar","Coca-Cola sem açúcar 350ml.","5.00"],["Refrigerante Pepsi 350ml Lata","Pepsi 350ml.","5.00"]],
+"Batatas Fritas":[
+["Batata Frita (pequena) Samurai","Batatas fritas douradinhas, sequinhas e irresistíveis.","5.99"],
+["Batata Frita (grande)","Porção generosa, douradinha e sequinha, ideal para dividir.","9.00"],
+["Batata Frita (suprema)","Porção sequinha com cheddar cremoso e bacon em cubos.","19.00"],
+["Anéis de Cebola Porção 8 Unidades","Anéis de cebola crocantes.","10.99"]],
+"Sucos":[["Suco de Cacau 500ml","Suco de cacau.","5.99"],["Suco de Graviola 500ml","Suco de graviola.","5.99"],["Suco de Mangaba 500ml","Suco de mangaba.","5.99"],["Suco 500ml Maracujá","Suco de maracujá.","5.99"]],
+"Macaxeira Frita":[["Porção de Macaxeira M","Porção média de macaxeira frita.","5.99","9.99"],["Porção de Macaxeira P","Porção pequena de macaxeira frita.","4.99","6.99"],["Porção de Macaxeira G","Porção grande de macaxeira frita.","12.99"]]
+};
+
+let cart = JSON.parse(localStorage.getItem("samurai_cart")||"[]");
+let products = JSON.parse(localStorage.getItem("samurai_products")||"null") || DATA;
+
+function money(v){return Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function save(){localStorage.setItem("samurai_products",JSON.stringify(products));render()}
+function render(){
+ const cats=document.getElementById("cats"); cats.innerHTML="";
+ Object.keys(products).forEach((c,i)=>{let b=document.createElement("button");b.textContent=c;b.onclick=()=>document.getElementById("cat-"+i).scrollIntoView({behavior:"smooth"});cats.appendChild(b)});
+ const menu=document.getElementById("menu"); menu.innerHTML="";
+ Object.entries(products).forEach(([cat,items],i)=>{
+  let sec=document.createElement("section");sec.className="section";sec.id="cat-"+i;sec.innerHTML=`<h2>${cat}</h2><div class="grid"></div>`;
+  let grid=sec.querySelector(".grid");
+  items.forEach((p,j)=>{let d=document.createElement("div");d.className="card";d.innerHTML=`<img class="pic" src="${p[4]||''}" onerror="this.style.visibility='hidden'"><div class="info"><h3>${p[0]}</h3><div class="desc">${p[1]||''}</div><div class="price-row"><div class="price">${money(p[2])}${p[3]?` <span class="old">${money(p[3])}</span>`:''}</div><button class="add" onclick="add('${cat.replaceAll("'","\\'")}',${j})">Adicionar</button></div></div>`;grid.appendChild(d)});
+  menu.appendChild(sec)
+ });
+ updateCart()
+}
+function add(cat,i){cart.push({cat,i});localStorage.setItem("samurai_cart",JSON.stringify(cart));updateCart();alert("Produto adicionado ao pedido!")}
+function updateCart(){document.getElementById("cartCount").textContent=cart.length}
+function openCart(){renderCart();document.getElementById("cartModal").classList.add("open")}
+function closeCart(){document.getElementById("cartModal").classList.remove("open")}
+function renderCart(){
+ let box=document.getElementById("cartItems"),total=0;box.innerHTML="";
+ cart.forEach((x,n)=>{let p=products[x.cat][x.i];total+=+p[2];let r=document.createElement("div");r.className="row";r.innerHTML=`<span><b>${p[0]}</b> — ${money(p[2])}</span><button onclick="cart.splice(${n},1);localStorage.setItem('samurai_cart',JSON.stringify(cart));renderCart();updateCart()"><i class="fa-solid fa-trash"></i></button>`;box.appendChild(r)});
+ document.getElementById("cartTotal").textContent="Total: "+money(total)
+}
+function sendWhatsApp(){
+ if(!cart.length){alert("Adicione produtos ao pedido.");return}
+ let nome=document.getElementById("customer").value||"Cliente",end=document.getElementById("address").value||"Não informado";
+ let total=0, lines=cart.map(x=>{let p=products[x.cat][x.i];total+=+p[2];return `• ${p[0]} — ${money(p[2])}`}).join("\n");
+ let msg=`Olá, Samurai Burguer & Sushi!\n\n*Novo pedido*\nCliente: ${nome}\nEndereço: ${end}\n\n${lines}\n\n*Total: ${money(total)}*`;
+ 
+ // Seu número do WhatsApp completo com DDI (55) e DDD
+ let phoneNumber = "557998276808"; 
+ 
+ let url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(msg)}`;
+ window.location.href = url;
+}
+function admin(){
+ let pass=prompt("Digite a senha do painel:");
+ if(pass!=="brasil123"){alert("Senha incorreta.");return}
+ document.getElementById("adminModal").classList.add("open");
+ renderAdmin()
+}
+function handleImage(input, cat, index, isNew = false) {
+  if (input.files && input.files[0]) {
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      if (isNew) {
+        document.getElementById('newImgBase64').value = e.target.result;
+      } else {
+        products[cat][index][4] = e.target.result;
+        save();
+        renderAdmin();
+      }
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+function renderAdmin(){
+ let a=document.getElementById("adminApp");
+ let rows="";
+ Object.entries(products).forEach(([cat,items])=>items.forEach((p,j)=>rows+=`<tr><td>${cat}</td><td><input value="${p[0].replaceAll('"','&quot;')}" onchange="products['${cat}'][${j}][0]=this.value;save()"></td><td><input type="number" step=".01" value="${p[2]}" onchange="products['${cat}'][${j}][2]=this.value;save()"></td><td><input type="file" accept="image/*" onchange="handleImage(this, '${cat}', ${j})"><br>${p[4]?'<img src="'+p[4]+'" style="width:40px;height:40px;object-fit:cover;border-radius:4px;margin-top:4px">':''}</td><td><button class="danger" onclick="products['${cat}'].splice(${j},1);save();renderAdmin()">Excluir</button></td></tr>`));
+ a.innerHTML=`<h2>Painel administrativo</h2><p class="small">Senha configurada: <b>brasil123</b>. Os dados deste painel ficam salvos no navegador.</p>
+ <h3>Adicionar produto</h3><select id="newCat">${Object.keys(products).map(c=>`<option>${c}</option>`).join("")}</select>
+ <input id="newName" placeholder="Nome do produto"><input id="newDesc" placeholder="Descrição"><input id="newPrice" type="number" step=".01" placeholder="Preço">
+ <label class="small" style="display:block;margin-top:5px">Foto do produto (Galeria):</label>
+ <input type="file" accept="image/*" id="newImgFile" onchange="handleImage(this, null, null, true)">
+ <input type="hidden" id="newImgBase64" value="">
+ <button class="add" style="margin-top:10px;width:100%;padding:10px" onclick="let c=document.getElementById('newCat').value;let img=document.getElementById('newImgBase64').value;products[c].push([document.getElementById('newName').value,document.getElementById('newDesc').value,document.getElementById('newPrice').value,'',img]);save();renderAdmin()">Adicionar produto</button>
+ <h3>Produtos</h3><div style="overflow:auto;max-height:300px;margin-top:10px"><table><tr><th>Categoria</th><th>Nome</th><th>Preço</th><th>Foto</th><th></th></tr>${rows}</table></div>
+ <button class="danger" style="margin-top:15px;width:100%" onclick="localStorage.removeItem('samurai_products');products=DATA;save();renderAdmin()">Restaurar cardápio original</button>`;
+}
+render();
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>Hello, World!</title>
+</head>
+<body>
+  <h1>
+    Hello, World!
+  </h1>
+</body>
+</html>
